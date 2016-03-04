@@ -1,2 +1,2 @@
-# nodejs-MySQL-Mongodb-
-nodejs操作mysql 以及mongodb类
+# nodejs mysql-util
+nodejs操作mysql 
