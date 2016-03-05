@@ -1,6 +1,6 @@
-var BaseModel=require("./BaseModel");
+var MysqlUtil=require("./mysql-util");
 
-var dbConnection=new BaseModel();
+var DbConnect=new MysqlUtil();
 
 // dbConnection.insert("node_book",{
 // 	book_name:"《javascript》",
@@ -33,7 +33,7 @@ var dbConnection=new BaseModel();
 // })
 // 
 
-dbConnection.find("node_book","book_id>10","book_id asc",[1,3],function(data){
+DbConnect.find("node_book","book_id>10","book_id asc",[1,3],function(data){
 	console.log(data);
 });
 
