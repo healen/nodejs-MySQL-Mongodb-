@@ -1,5 +1,5 @@
-var MysqlUtil=require("./mysql-util");
-var cryptos=require("./modules/encryption");
+var MysqlUtil=require("../mysql-util");
+var cryptos=require("../modules/encryption");
 
 var Db=new MysqlUtil();
 

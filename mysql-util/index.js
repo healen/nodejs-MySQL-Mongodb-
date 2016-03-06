@@ -13,13 +13,20 @@ var dbClient;
 module.exports = function() {
 	__constructor();
 
+	this.escape=function(str){
+		return mysql.escape(str);
+	}
+	this.close=function(){
+		dbClient.end();
+	}
+
 	/*执行数据库*/
 	this.query=function(sql,callback){
 		dbClient.query(sql,function(err,result){
 			if(err){
-				callback("query sql bad error="+err);
+				callback&&callback("query sql bad error="+err);
 			}else{
-				callback(result);
+				callback&&callback(result);
 			}
 		});
 	}
@@ -28,9 +35,9 @@ module.exports = function() {
 	this.findOneById = function(tableName, idJson, callback) {
 		dbClient.query("SELECT * FROM "+tableName+" WHERE ?",idJson,function(err,results){
 			if(err){
-				callback("findOneById bad error="+err);
+				callback&&callback("findOneById bad error="+err);
 			}else{
-				results ? callback(results.pop()) : callback(results);
+				results ? callback&&callback(results.pop()) : callback&&callback(results);
 			}
 		});
 	}
@@ -42,9 +49,9 @@ module.exports = function() {
 	this.insert = function(tableName, rowInfo, callback) {
 		dbClient.query("INSERT INTO "+tableName+" SET ?",rowInfo,function(err,result){
 			if(err){
-				callback("insert bad error="+err);
+				callback&&callback("insert bad error="+err);
 			} else{
-				callback("insert success insertId="+result.insertId);
+				callback&&callback("insert success insertId="+result.insertId);
 
 			}
 		
@@ -56,9 +63,9 @@ module.exports = function() {
 	this.modify = function(tableName, idJson, rowInfo, callback) {
 		dbClient.query("UPDATE "+tableName+" SET ? WHERE ?",[rowInfo,idJson],function(err,result){
 			if(err){
-				callback("update bad error="+err);
+				callback&&callback("update bad error="+err);
 			}else{
-				callback(result);
+				callback&&callback(result);
 			}
 
 		})
@@ -69,9 +76,9 @@ module.exports = function() {
 	this.remove = function(tableName, idJson, callback) {
 		dbClient.query("DELETE FROM "+tableName+" WHERE ?",idJson,function(err,result){
 			if(err){
-				callback("remove bad error="+err);
+				callback&&callback("remove bad error="+err);
 			}else{
-				callback("remove success");
+				callback&&callback("remove success");
 			} 
 		});
 
@@ -81,12 +88,21 @@ module.exports = function() {
 
 	this.find = function(tableName,whereSql,orderBy,limitArr,callback){
 		// console.log(arguments.length);
-		if(arguments.length<3){
+		if(arguments.length<2){
 			console.log("param err");
 			return;
 		}
 
 		switch(arguments.length){
+			case 2 : 
+				dbClient.query("SELECT * FROM "+tableName,function(err,results){
+					if(err){
+						whereSql("find bad error="+err);
+					}else{
+						whereSql(results);
+					}
+				});
+			break;
 			case 3 : 
 				dbClient.query("SELECT * FROM "+tableName+" WHERE "+ whereSql,function(err,results){
 					if(err){
@@ -110,9 +126,9 @@ module.exports = function() {
 			case 5 : 
 				dbClient.query("SELECT * FROM "+tableName+" WHERE "+ whereSql+" ORDER BY "+orderBy+" LIMIT "+limitArr[0]+","+limitArr[1],function(err,results){
 					if(err){
-						callback("find bad error="+err);
+						callback&&callback("find bad error="+err);
 					}else{
-						callback(results);
+						callback&&callback(results);
 					}
 				});
 			break;
