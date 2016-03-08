@@ -1,0 +1,14 @@
+{
+  "name": "ccap",
+  "version": "1.0.0",
+  "description": "README.md",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "captchapng": "0.0.1"
+  }
+}
